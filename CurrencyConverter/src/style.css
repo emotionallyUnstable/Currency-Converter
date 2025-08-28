@@ -1,0 +1,58 @@
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+body {
+ background: rgb(255, 255, 255);
+ color: rgb(0, 0, 0);
+ -webkit-font-smoothing: antialiased;
+}
+
+body, input, button {
+ font-size: 16px;
+ font-family: sans-serif;
+}
+
+button {
+ cursor: pointer;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column; 
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container__currency_converter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 0.5rem solid rgb(0, 0, 0);
+}
+
+.container__converter {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem;
+}
+
+.btn__converter {
+  width: 3rem;
+  border-radius: 1rem;
+  border: 1px solid red;
+}
+
+.input {
+  width: 20rem;
+  height: 2rem;
+  border: 1px solid red;
+}
