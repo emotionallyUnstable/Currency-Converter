@@ -56,3 +56,34 @@ button {
   height: 2rem;
   border: 1px solid red;
 }
+
+.button {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+
+/*-----dropdowns css---------*/
+
+
+.dropdown {
+  display: flex;
+  justify-content: end;
+  position: relative;
+}
+
+
+.select {
+  background-color: #f01e1e;
+}
+
+.menu {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+li {
+  display: flex;
+  justify-content: end;
+}

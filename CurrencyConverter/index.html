@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -14,12 +15,43 @@
             <h1>Currency Converter</h1>
             <div>
               <p>From</p>
-              <input class="input__first_currency input" type="text">
+              <div>
+              <input class="input__first_currency input" type="number">
+
+                <div class="dropdown">
+                  <div class="select">
+                    <span class="selected">$</span>
+                  <div class="caret"></div>
+                </div>
+                <ul class="menu">
+                  <li class="active">$</li>
+                  <li>€</li>
+                  <li>₴</li>
+                  <li>¥</li>
+                </ul>
+                </div>
+
             </div>
-            <button class="btn__converter">+-</button>
+            <button class="btn__converter">↕↕</button>
             <div>
               <p>To</p>
-              <input class="input__second_currency input" type="text">
+              <div>
+              <input class="input__second_currency input" type="number" min="1" max="100000">
+              
+                 <div class="dropdown">
+                  <div class="select">
+                    <span class="selected">₴</span>
+                  <div class="caret"></div>
+                </div>
+                <ul class="menu">
+                  <li>$</li>
+                  <li>€</li>
+                  <li class="active">₴</li>
+                  <li>¥</li>
+                </ul>
+                </div>
+
+              </div>
             </div>
           </div>
         </div>
