@@ -16,7 +16,9 @@
             <div>
               <p>From</p>
               <div>
-              <input class="input__first_currency input" type="number">
+
+                <div class="input__first_currency__container">
+              <input class="input" type="number" min="1" max="100000">
 
                 <div class="dropdown">
                   <div class="select">
@@ -30,13 +32,15 @@
                   <li>¥</li>
                 </ul>
                 </div>
+                </div>
 
             </div>
-            <button class="btn__converter">↕↕</button>
             <div>
-              <p>To</p>
+              <p class="partOf__second_currency">To</p>
               <div>
-              <input class="input__second_currency input" type="number" min="1" max="100000">
+
+                <div class="input__second_currency__container">
+              <input class="input" type="number" min="1" max="100000">
               
                  <div class="dropdown">
                   <div class="select">
@@ -49,6 +53,7 @@
                   <li class="active">₴</li>
                   <li>¥</li>
                 </ul>
+                </div>
                 </div>
 
               </div>
