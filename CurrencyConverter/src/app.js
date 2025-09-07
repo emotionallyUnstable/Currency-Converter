@@ -30,3 +30,40 @@ dropdowns.forEach(dropdown => {
         })
     })
 })
+
+    document.addEventListener("DOMContentLoaded", () => {
+    async function getCurrencyInfo() {
+        try{
+            const response = await fetch("https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=EUR,UAH,JPY",
+                {
+                    headers: {
+                        apikey:"444a5601dfba32d70234f06a69c580b6",
+                    },
+                }
+            )
+
+            if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+          const currencyData = await response.json();
+          console.log(currencyData);
+
+          const resultElement = document.getElementById("currency-result");
+
+            if(resultElement) {
+            resultElement.innerHTML = 
+            `
+                1 USD = ${currencyData.rates.EUR} EUR <br>
+                1 USD = ${currencyData.rates.UAH} UAH <br>
+                1 USD = ${currencyData.rates.JPY} JPY
+            `
+            }
+
+        } catch(error) {
+            console.log(error);
+        }
+    }
+    
+  getCurrencyInfo();
+   });   
