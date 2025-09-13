@@ -1,8 +1,8 @@
-const dropdowns = document.querySelectorAll(".dropdown")
+document.addEventListener("DOMContentLoaded", () => {
+  
+  const dropdowns = document.querySelectorAll(".dropdown");
 
-
-dropdowns.forEach(dropdown => {
-
+  dropdowns.forEach((dropdown) => {
     const select = dropdown.querySelector(".select");
     const caret = dropdown.querySelector(".caret");
     const menu = dropdown.querySelector(".menu");
@@ -10,60 +10,113 @@ dropdowns.forEach(dropdown => {
     const selected = dropdown.querySelector(".selected");
 
     select.addEventListener("click", () => {
-        select.classList.toggle("select-clicked");
-        caret.classList.toggle("caret-rotate");
-        menu.classList.toggle("menu-open")
+      select.classList.toggle("select-clicked");
+      caret.classList.toggle("caret-rotate");
+      menu.classList.toggle("menu-open");
     });
 
-    options.forEach(option => {
-        option.addEventListener("click", () => {
-            select.innerText  = option.innerText ;
-            select.classList.remove("select-clicked");
-            caret.classList.remove("caret-rotate");
-            menu.classList.remove("menu-open");
+    options.forEach((option) => {
+      option.addEventListener("click", () => {
+        
+        selected.innerText = option.innerText;
 
-        options.forEach(option => {
-            option.classList.remove("active");
-        });
+        select.classList.remove("select-clicked");
+        caret.classList.remove("caret-rotate");
+        menu.classList.remove("menu-open");
+
+        options.forEach((o) => o.classList.remove("active"));
         option.classList.add("active");
 
-        })
-    })
-})
+        converter(); 
+      });
+    });
+  });
 
-    document.addEventListener("DOMContentLoaded", () => {
-    async function getCurrencyInfo() {
-        try{
-            const response = await fetch("https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=EUR,UAH,JPY",
-                {
-                    headers: {
-                        apikey:"444a5601dfba32d70234f06a69c580b6",
-                    },
-                }
-            )
+  let currencyData = null;
 
-            if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
+  
+  const amountInput = document.querySelector("#amount");
+  const resultInput = document.querySelector("#result");
 
-          const currencyData = await response.json();
-          console.log(currencyData);
+  const symbolMap = {
+    "$": "USD",
+    "€": "EUR",
+    "₴": "UAH",
+    "¥": "JPY",
+  };
 
-          const resultElement = document.getElementById("currency-result");
+  
+  function getSelectedCurrency(container) {
+    const active = container.querySelector(".menu .active");
+    return active ? active.innerText.trim() : null;
+  }
 
-            if(resultElement) {
-            resultElement.innerHTML = 
-            `
-                1 USD = ${currencyData.rates.EUR} EUR <br>
-                1 USD = ${currencyData.rates.UAH} UAH <br>
-                1 USD = ${currencyData.rates.JPY} JPY
-            `
-            }
+  
+  function converter() {
+    if (!currencyData) return;
 
-        } catch(error) {
-            console.log(error);
-        }
+    const amount = parseFloat(amountInput.value);
+    if (isNaN(amount)) {
+      resultInput.value = "";
+      return;
     }
-    
+
+    const fromSymbol = getSelectedCurrency(
+      document.querySelector(".input__first_currency__container")
+    );
+    const toSymbol = getSelectedCurrency(
+      document.querySelector(".input__second_currency__container")
+    );
+
+    const from = symbolMap[fromSymbol];
+    const to = symbolMap[toSymbol];
+
+    if (!from || !to) return;
+
+    let rate;
+    if (from === to) {
+      rate = 1;
+    } else if (from === "USD") {
+      rate = currencyData.rates[to];
+    } else if (to === "USD") {
+      rate = 1 / currencyData.rates[from];
+    } else {
+      rate = currencyData.rates[to] / currencyData.rates[from];
+    }
+
+    resultInput.value = (amount * rate).toFixed(2);
+  }
+
+ 
+  amountInput.addEventListener("input", converter);
+
+  
+  async function getCurrencyInfo() {
+    try {
+      const response = await fetch(
+        "https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=EUR,UAH,JPY&apikey=0pJ62I6YcmWJOEVC3keqDRGhnVa0zqX6",
+        {
+          method: "GET",
+          headers: {
+            apikey: "0pJ62I6YcmWJOEVC3keqDRGhnVa0zqX6",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      
+      currencyData = await response.json();
+      console.log(currencyData);
+
+      
+      converter();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   getCurrencyInfo();
-   });   
+});
