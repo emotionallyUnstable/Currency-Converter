@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  
   const dropdowns = document.querySelectorAll(".dropdown");
 
   dropdowns.forEach((dropdown) => {
@@ -17,15 +16,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     options.forEach((option) => {
       option.addEventListener("click", () => {
-        
         selected.innerText = option.innerText;
 
         select.classList.remove("select-clicked");
         caret.classList.remove("caret-rotate");
         menu.classList.remove("menu-open");
-
-        options.forEach((o) => o.classList.remove("active"));
-        option.classList.add("active");
 
         converter(); 
       });
@@ -34,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let currencyData = null;
 
-  
   const amountInput = document.querySelector("#amount");
   const resultInput = document.querySelector("#result");
 
@@ -45,13 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
     "¥": "JPY",
   };
 
-  
   function getSelectedCurrency(container) {
-    const active = container.querySelector(".menu .active");
-    return active ? active.innerText.trim() : null;
+    const selected = container.querySelector(".selected");
+    return selected ? selected.innerText.trim() : null;
   }
 
-  
   function converter() {
     if (!currencyData) return;
 
@@ -87,36 +79,35 @@ document.addEventListener("DOMContentLoaded", () => {
     resultInput.value = (amount * rate).toFixed(2);
   }
 
- 
   amountInput.addEventListener("input", converter);
 
-  
   async function getCurrencyInfo() {
     try {
       const response = await fetch(
-        "https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=EUR,UAH,JPY&apikey=0pJ62I6YcmWJOEVC3keqDRGhnVa0zqX6",
+        "https://api.apilayer.com/exchangerates_data/latest?base=USD&symbols=EUR,UAH,JPY",
         {
           method: "GET",
           headers: {
-            apikey: "0pJ62I6YcmWJOEVC3keqDRGhnVa0zqX6",
+            apikey: "0lxhT7BYO7rEMrFzSLDVTWdx9KblKEiX",
           },
         }
       );
 
+      console.log("Response status:", response.status);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      
       currencyData = await response.json();
-      console.log(currencyData);
+      console.log("Data:", currencyData);
+      console.log("Loaded rates:", currencyData);
 
-      
       converter();
     } catch (error) {
       console.error(error);
     }
   }
 
+  console.log("Calling getCurrencyInfo...");
   getCurrencyInfo();
 });
