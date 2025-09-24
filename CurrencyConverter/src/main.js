@@ -114,36 +114,38 @@ document.addEventListener("DOMContentLoaded", () => {
   amountInput.addEventListener("input", converter);
 
   
-  async function getCurrencyInfo() {
-    console.log("Calling getCurrencyInfo...");
+ async function getCurrencyInfo() {
+  console.log("Calling getCurrencyInfo...");
 
-    const url = "https://api.exchangerate.host/latest?base=USD&symbols=EUR,UAH,JPY";
 
-    try {
-      console.log("Fetch start:", url);
-      const response = await fetch(url);
-      console.log("Response status:", response.status);
+  const url = "https://open.er-api.com/v6/latest/USD";
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
+  try {
+    console.log("Fetch start:", url);
+    const response = await fetch(url);
+    console.log("Response status:", response.status);
 
-      const data = await response.json();
-      console.log("Raw API data:", data);
-
-      currencyData = data;
-      console.log("currencyData set:", currencyData);
-
-      if (resultInfo) {
-        resultInfo.textContent = `Rates loaded (base ${currencyData.base})`;
-      }
-
-      converter();
-    } catch (err) {
-      console.error("getCurrencyInfo error:", err);
-      if (resultInfo) resultInfo.textContent = "Не вдалося завантажити курси.";
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
+
+    const data = await response.json();
+    console.log("Raw API data:", data);
+
+    
+    currencyData = { rates: data.rates, base: data.base_code };
+    console.log("currencyData set:", currencyData);
+
+    if (resultInfo) {
+      resultInfo.textContent = `Rates loaded (base ${currencyData.base})`;
+    }
+
+    converter(); 
+  } catch (err) {
+    console.error("getCurrencyInfo error:", err);
+    if (resultInfo) resultInfo.textContent = "Не вдалося завантажити курси.";
   }
+}
 
   getCurrencyInfo();
 });
